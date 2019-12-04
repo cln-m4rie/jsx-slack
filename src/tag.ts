@@ -12,6 +12,11 @@ type JSXSlackTemplate<T = any> = (
 ) => T
 
 interface JSXSlackTemplateTag extends JSXSlackTemplate {
+  /**
+   * Render JSX node(s) for jsx-slack written in template literal to the raw
+   * object model(s). It's suitable to define fragments or custom component
+   * without setting up JSX transpiler.
+   */
   readonly fragment: JSXSlackTemplate
 }
 
@@ -151,6 +156,11 @@ const parse = (template: TemplateStringsArray, ...substitutions: any[]) => {
     : render(resolveComponent(parsed))
 }
 
+/**
+ * Render JSX node for jsx-slack written in template literal to JSON object. It
+ * could parse a template written in JSX-like syntax by HTM (Hyperscript Tagged
+ * Markup).
+ */
 const jsxslack: JSXSlackTemplateTag = Object.defineProperty(
   (template: TemplateStringsArray, ...substitutions: any[]) =>
     JSXSlack(parse(template, ...substitutions)),
