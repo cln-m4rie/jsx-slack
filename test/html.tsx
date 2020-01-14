@@ -813,7 +813,7 @@ describe('HTML parser for mrkdwn', () => {
       ).toBe('<!date^1552212000^{date_num}|fallback>')
     })
 
-    it('generates UTC fallback text from content if fallback attr is not defined', () => {
+    it('generates fallback text from content if fallback attr is not defined', () => {
       // 1552212000 => 2019-03-10 10:00:00 UTC (= 02:00 PST = 03:00 PDT)
       expect(html(<time datetime={1552212000}>{'{date_num}'}</time>)).toBe(
         '<!date^1552212000^{date_num}|2019-03-10>'

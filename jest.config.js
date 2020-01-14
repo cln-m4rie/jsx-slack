@@ -10,6 +10,7 @@ module.exports = {
   ],
   coveragePathIgnorePatterns: ['/node_modules/', '.*\\.d\\.ts'],
   coverageThreshold: { global: { lines: 95 } },
+  globalSetup: '<rootDir>/jest.global.js',
   resetMocks: true,
   restoreMocks: true,
   testEnvironment: 'node',
