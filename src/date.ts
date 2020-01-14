@@ -32,36 +32,36 @@ const addOrdinal = (day: number) => {
 
 export default function formatDate(date: Date, format: string) {
   const formattedDate = (short = false) => {
-    let m = months[date.getUTCMonth()]
+    let m = months[date.getMonth()]
     if (short) m = m.slice(0, 3)
 
-    let d: number | string = date.getUTCDate()
+    let d: number | string = date.getDate()
     if (!short) d = addOrdinal(d)
 
-    return `${m} ${d}, ${date.getUTCFullYear()}`
+    return `${m} ${d}, ${date.getFullYear()}`
   }
 
   const formattedTime = (second = false) => {
-    const h = `${date.getUTCHours()}`.padStart(2, '0')
-    const m = `${date.getUTCMinutes()}`.padStart(2, '0')
-    const ampm = date.getUTCHours() >= 12 ? 'PM' : 'AM'
+    const h = `${date.getHours()}`.padStart(2, '0')
+    const m = `${date.getMinutes()}`.padStart(2, '0')
+    const ampm = date.getHours() >= 12 ? 'PM' : 'AM'
 
     if (!second) return `${h}:${m} ${ampm}`
 
-    const s = `${date.getUTCSeconds()}`.padStart(2, '0')
+    const s = `${date.getSeconds()}`.padStart(2, '0')
     return `${h}:${m}:${s} ${ampm}`
   }
 
   const prettifiedDate = (camelize = false) => {
     const now = new Date()
-    const ny = now.getUTCFullYear()
-    const nm = now.getUTCMonth()
-    const nd = now.getUTCDate()
+    const ny = now.getFullYear()
+    const nm = now.getMonth()
+    const nd = now.getDate()
 
-    const beginYesterday = Date.UTC(ny, nm, nd - 1, 0, 0, 0)
-    const beginToday = Date.UTC(ny, nm, nd, 0, 0, 0)
-    const beginTomorrow = Date.UTC(ny, nm, nd + 1, 0, 0, 0)
-    const endTomorrow = Date.UTC(ny, nm, nd + 2, 0, 0, 0) - 1
+    const beginYesterday = new Date(ny, nm, nd - 1, 0, 0, 0).getTime()
+    const beginToday = new Date(ny, nm, nd, 0, 0, 0).getTime()
+    const beginTomorrow = new Date(ny, nm, nd + 1, 0, 0, 0).getTime()
+    const endTomorrow = new Date(ny, nm, nd + 2, 0, 0, 0).getTime() - 1
 
     const unixtime = date.getTime()
     let ret = ''
@@ -76,9 +76,9 @@ export default function formatDate(date: Date, format: string) {
 
   return format
     .replace(/{date_num}/g, () => {
-      const y = `${date.getUTCFullYear()}`.padStart(4, '0')
-      const m = `${date.getUTCMonth() + 1}`.padStart(2, '0')
-      const d = `${date.getUTCDate()}`.padStart(2, '0')
+      const y = `${date.getFullYear()}`.padStart(4, '0')
+      const m = `${date.getMonth() + 1}`.padStart(2, '0')
+      const d = `${date.getDate()}`.padStart(2, '0')
 
       return `${y}-${m}-${d}`
     })
@@ -93,10 +93,7 @@ export default function formatDate(date: Date, format: string) {
     )
     .replace(/{date}/g, () => formattedDate())
     .replace(/{date_short}/g, () => formattedDate(true))
-    .replace(
-      /{date_long}/g,
-      () => `${days[date.getUTCDay()]}, ${formattedDate()}`
-    )
+    .replace(/{date_long}/g, () => `${days[date.getDay()]}, ${formattedDate()}`)
     .replace(/{time}/g, () => formattedTime())
     .replace(/{time_secs}/g, () => formattedTime(true))
 }
